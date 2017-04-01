@@ -1,0 +1,9 @@
+{
+  "name": "reddit-place-italy",
+  "version": "1.0.0",
+  "description": "Protect the italian flag in /r/place",
+  "author": "skilion",
+  "license": "GPL-3.0",
+  "dependencies": { "request": "latest", "pngjs": "latest", "jsonfile": "latest" },
+  "scripts": {"start": "node app.js"}
+}
