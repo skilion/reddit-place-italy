@@ -25,6 +25,14 @@ exports.pixel = function(x, y, callback) {
 	);
 }
 
+// get the waiting time
+exports.time = function(callback) {
+	request.get(
+		'place/time.json',
+		callback
+	);
+}
+
 // set a pixel color
 exports.draw = function(x, y, color, modhash, callback) {
 	let options = {
