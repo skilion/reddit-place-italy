@@ -6,7 +6,10 @@ Questo programma coordina gli sforzi di [/r/italy](https://www.reddit.com/r/ital
 ## Installazione - Windows
 1. Installare [Node.js](https://nodejs.org/it/)
 2. Scaricare ed estrarre [reddit-place-italy](https://github.com/skilion/reddit-place-italy/archive/master.zip)
-3. Entrare con il prompt comandi nella cartella ed eseguire `npm install`
+3. Aprire il prompt comandi nella cartella scaricata
+	- Con Windows 10: SHIFT + tasto destro del mouse sulla cartella, "Apri finestra di comando qui"
+	- Con gli altri bisogna navigare [manualmente](http://it.wikihow.com/Cambiare-Directory-dal-Prompt-dei-Comandi)
+4. Eseguire dal prompt comandi `npm install`
 
 ## Installazione - Linux
 ```
