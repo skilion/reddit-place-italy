@@ -1,5 +1,6 @@
 let fs = require('fs');
 let PNG = require('pngjs').PNG;
+let request = require('request');
 var jsonfile = require('jsonfile');
 
 let r = require('./r');
@@ -10,55 +11,68 @@ if (!fs.existsSync("users.json")) {
 	console.log('Put your credentials in "users.json"');
 	process.exit(1);
 }
-var users = jsonfile.readFileSync("users.json");
+let users = jsonfile.readFileSync("users.json");
+let extra = {}; // store the cookie jar and modhash for each user
 
-let username, password, modhash;
 for (var key in users) {
-	username = key;
-	password = users[username];
+	init(key);
 }
 
-
-r.login(username, password, function(err, httpResponse, body) {
-	body = JSON.parse(body);
-	if (body.json.errors.length) {
-		console.log('login error');
-		return;
-	}
-	modhash = body.json.data.modhash;
-	loop();
-	
-	// simple error handler
-	process.on('uncaughtException', function (err) {
-		console.error((new Date).toUTCString() + ' uncaughtException:', err.message);
-		console.error(err.stack);
-		setTimeout(loop, 60000);
-	});
-});
-
-function loop() {
-	r.time(function(err, httpResponse, body) {
+function init(username) {
+	extra[username] = { 'jar': request.jar() };
+	r.login(username, users[username], extra[username]['jar'], function(err, httpResponse, body) {
 		body = JSON.parse(body);
+		if (body.json.errors.length) {
+			console.log('login error');
+			return;
+		}
+		extra[username]['modhash'] = body.json.data.modhash;
+		console.log('Successfully logged in as ' + username);
+		loop(username);
+	});
+}
+
+function loop(username) {
+	r.time(extra[username]['jar'], function(err, httpResponse, body) {
+		try {
+			body = JSON.parse(body);
+		} catch (e) {
+			// if internet connection is lost, this is the first exception
+			console.log('could not get the waiting time');
+			setTimeout(loop.bind(null, username), 60000);
+			return;
+		}
+		if ('error' in body) {
+			if (body.error == 403) {
+				console.log(username + ' is forbidden to use /r/place');
+			} else if (body.error == 429) {
+				// Too many requests
+				setTimeout(loop.bind(null, username), 10000);
+			}
+			return;
+		}
 		if (body.wait_seconds == 0) {
 			var d = new Date();
 			console.log(d.toUTCString());
 			console.log('Finding pixel...');
-			findPixel();
+			findPixel(username);
 			return;
 		}
-		setTimeout(loop, Math.floor(body.wait_seconds * 1000));
+		setTimeout(loop.bind(null, username), Math.floor(body.wait_seconds * 1000));
 	});
 }
 
-function findPixel() {
+function findPixel(username) {
 	diff.findDiffPixel(function(x, y, color) {
-		if (x != -1) setPixel(x, y, color);
-		setTimeout(loop, 10000);
+		if (x != -1) setPixel(username, x, y, color);
+		setTimeout(loop.bind(null, username), 10000);
 	});
 }
 
-function setPixel(x, y, color) {
-	r.draw(x, y, color, modhash, function(err, httpResponse, body) {
+function setPixel(username, x, y, color) {
+	let jar = extra[username]['jar'];
+	let modhash = extra[username]['modhash'];
+	r.draw(x, y, color, jar, modhash, function(err, httpResponse, body) {
 		let res = JSON.parse(body);
 		if ("json" in res) {
 			console.log('r.draw failed: ' + body);

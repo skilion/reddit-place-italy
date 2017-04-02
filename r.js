@@ -3,13 +3,14 @@
  *************************/
 
 let request = require('request');
-request = request.defaults({ baseUrl: 'https://www.reddit.com/api/', jar: true });
+request = request.defaults({ baseUrl: 'https://www.reddit.com/api/' });
 
 // perform login
-exports.login = function(username, password, callback) {
+exports.login = function(username, password, jar, callback) {
 	let options = {
 		url: 'login',
-		form: { user: username, passwd: password, api_type: "json" }
+		form: { user: username, passwd: password, api_type: "json" },
+		jar: jar
 	}
 	request.post(
 		options,
@@ -26,19 +27,24 @@ exports.pixel = function(x, y, callback) {
 }
 
 // get the waiting time
-exports.time = function(callback) {
+exports.time = function(jar, callback) {
+	let options = {
+		url: 'place/time.json',
+		jar: jar
+	}
 	request.get(
-		'place/time.json',
+		options,
 		callback
 	);
 }
 
 // set a pixel color
-exports.draw = function(x, y, color, modhash, callback) {
+exports.draw = function(x, y, color, jar, modhash, callback) {
 	let options = {
 		url: 'place/draw.json',
 		form: { x: x, y: y, color: color },
-		headers: { 'X-Modhash': modhash }
+		headers: { 'X-Modhash': modhash },
+		jar: jar
 	}
 	request.post(
 		options,
