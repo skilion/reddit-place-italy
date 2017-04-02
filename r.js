@@ -1,6 +1,6 @@
-/////////////////////////
-// Reddit /r/place API //
-/////////////////////////
+/*************************
+ *  Reddit /r/place API  *
+ *************************/
 
 let request = require('request');
 request = request.defaults({ baseUrl: 'https://www.reddit.com/api/', jar: true });

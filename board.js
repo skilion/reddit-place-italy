@@ -7,6 +7,10 @@ r.board(function(err, httpResponse, body) {
 	bitmap2PNG(body).pack().pipe(fs.createWriteStream('board.png'));
 });
 
+exports.saveBoardInPNG = function(bitmap, callback) {
+	bitmap2PNG(bitmap).pack().pipe(fs.createWriteStream('board.png'));
+}
+
 const colors = [
 	[255, 255, 255],
 	[228, 228, 228],
