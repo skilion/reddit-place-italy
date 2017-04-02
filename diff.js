@@ -29,7 +29,9 @@ function findDiffPixel2(callback) {
 }
 
 function getTargetBitmap(callback) {
-	// TODO: download target from github
+	request('https://raw.githubusercontent.com/skilion/reddit-place-italy/master/target.png')
+	.pipe(fs.createWriteStream('target.png'));
+	
 	fs.createReadStream('target.png')
 	.pipe(new PNG())
 	.on('parsed', function() {
