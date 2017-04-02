@@ -21,7 +21,14 @@ for (var key in users) {
 function init(username) {
 	extra[username] = { 'jar': request.jar() };
 	r.login(username, users[username], extra[username]['jar'], function(err, httpResponse, body) {
-		body = JSON.parse(body);
+		try {
+			body = JSON.parse(body);
+		} catch (e) {
+			// if reddit is under heavy load it will return garbage
+			console.log(username + ': retry login in 10 secs');
+			setTimeout(init.bind(null, username), 10000);
+			return;
+		}
 		if (body.json.errors.length) {
 			console.log(username + ': login error');
 			return;
@@ -67,7 +74,7 @@ let lock = 0;
 function findPixel(username) {
 	// simple mutex
 	if (lock) {
-		setTimeout(loop.bind(null, username), 1000);
+		setTimeout(loop.bind(null, username), 5000);
 		return;
 	} else lock = 1;
 	diff.findDiffPixel(function(x, y, color) {

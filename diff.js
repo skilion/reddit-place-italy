@@ -76,7 +76,6 @@ function findDiffPixelInBmps(bmpBoard, bmpTarget, callback) {
 		let idx = x + y * 1000;
 		if (bmpTarget[idx] != -1) {
 			if (bmpTarget[idx] != bmpBoard[idx]) {
-				console.log('Pixel (' + x + ', ' + y + ') is ' + bmpBoard[idx] + ' should be ' + bmpTarget[idx]);
 				callback(x, y, bmpTarget[idx]);
 				return;
 			}
