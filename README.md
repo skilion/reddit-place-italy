@@ -27,3 +27,8 @@ npm start
 
 ## Creare un'immagine della board
 Eseguire `node board.js`, la board viene salvata in `board.png`
+
+## Changelog
+
+2017-04-02 17:30
+* Prima versione
