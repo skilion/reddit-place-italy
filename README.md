@@ -33,5 +33,8 @@ Eseguire `node board.js`, la board viene salvata in `board.png`
 
 ## Changelog
 
+2017-04-02 22:05
+* Gestione di utenti multipli
+
 2017-04-02 17:30
 * Prima versione
