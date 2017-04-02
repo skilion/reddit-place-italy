@@ -1,5 +1,6 @@
 let fs = require('fs');
 let PNG = require('pngjs').PNG;
+let request = require('request');
 
 let r = require('./r');
 let board = require('./board');
@@ -29,15 +30,19 @@ function findDiffPixel2(callback) {
 }
 
 function getTargetBitmap(callback) {
-	request('https://raw.githubusercontent.com/skilion/reddit-place-italy/master/target.png')
-	.pipe(fs.createWriteStream('target.png'));
+	let targetWriter = fs.createWriteStream('target.png');
 	
-	fs.createReadStream('target.png')
-	.pipe(new PNG())
-	.on('parsed', function() {
-		let bitmap = PNG2bitmap(this);
-		callback(bitmap);
-    });
+	targetWriter.on('finish', function() {
+		fs.createReadStream('target.png')
+		.pipe(new PNG())
+		.on('parsed', function() {
+			let bitmap = PNG2bitmap(this);
+			callback(bitmap);
+		});
+	});
+	
+	request('https://raw.githubusercontent.com/skilion/reddit-place-italy/master/target.png')
+	.pipe(targetWriter);
 }
 
 function getBoardBitmap(callback) {
