@@ -23,12 +23,13 @@ function init(username) {
 	r.login(username, users[username], extra[username]['jar'], function(err, httpResponse, body) {
 		body = JSON.parse(body);
 		if (body.json.errors.length) {
-			console.log('login error');
+			console.log(username + ': login error');
 			return;
 		}
 		extra[username]['modhash'] = body.json.data.modhash;
-		console.log('Successfully logged in as ' + username);
-		loop(username);
+		console.log(username + ': successfully logged in');
+		// randomize starting time to avoid loop running at the same time
+		setTimeout(loop.bind(null, username), Math.floor(Math.random() * 10000));
 	});
 }
 
@@ -38,7 +39,7 @@ function loop(username) {
 			body = JSON.parse(body);
 		} catch (e) {
 			// if internet connection is lost, this is the first exception
-			console.log('could not get the waiting time');
+			console.log(username + ': could not get the waiting time');
 			setTimeout(loop.bind(null, username), 60000);
 			return;
 		}
@@ -54,7 +55,7 @@ function loop(username) {
 		if (body.wait_seconds == 0) {
 			var d = new Date();
 			console.log(d.toUTCString());
-			console.log('Finding pixel...');
+			console.log(username + ': finding pixel...');
 			findPixel(username);
 			return;
 		}
@@ -62,10 +63,17 @@ function loop(username) {
 	});
 }
 
+let lock = 0;
 function findPixel(username) {
+	// simple mutex
+	if (lock) {
+		setTimeout(loop.bind(null, username), 1000);
+		return;
+	} else lock = 1;
 	diff.findDiffPixel(function(x, y, color) {
 		if (x != -1) setPixel(username, x, y, color);
 		setTimeout(loop.bind(null, username), 10000);
+		lock = 0;
 	});
 }
 
@@ -75,8 +83,8 @@ function setPixel(username, x, y, color) {
 	r.draw(x, y, color, jar, modhash, function(err, httpResponse, body) {
 		let res = JSON.parse(body);
 		if ("json" in res) {
-			console.log('r.draw failed: ' + body);
+			console.log(username + ': r.draw failed: ' + body);
 		}
-		console.log('Pixel (' + x + ', ' + y + ') set to ' + color);
+		console.log(username + ': pixel (' + x + ', ' + y + ') set to ' + color);
 	});
 }

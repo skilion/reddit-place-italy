@@ -33,8 +33,11 @@ Eseguire `node board.js`, la board viene salvata in `board.png`
 
 ## Changelog
 
-2017-04-02 22:05
+2017-04-02 22:50 CET
+* Corretto bug per cui multipli account correggono contemporaneamente lo stesso pixel
+
+2017-04-02 22:05 CET
 * Gestione di utenti multipli
 
-2017-04-02 17:30
+2017-04-02 17:30 CET
 * Prima versione
