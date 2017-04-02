@@ -24,3 +24,6 @@ Aprire `users.json` con un editor di testo e inserire gli account di reddit disp
 ```
 npm start
 ```
+
+## Creare un'immagine della board
+Eseguire `node board.js`, la board viene salvata in `board.png`
