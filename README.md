@@ -1,10 +1,8 @@
 # Reddit Place Italia
+Questo programma ha coordinato gli sforzi di [/r/italy](https://www.reddit.com/r/italy/) su [/r/place](https://www.reddit.com/r/place/) ([wikipedia](https://en.wikipedia.org/wiki/Reddit#Place)) il 2017-04-02 e il 2017-04-03 tramite il seguente [fork](https://github.com/theitalyplace/reddit-place-italy).
 
-# NOTA: questa versione è deprecata, per continuare a sostenere [/r/italy](https://www.reddit.com/r/italy/) utilizza: https://github.com/theitalyplace/reddit-place-italy
-
-Questo programma coordina gli sforzi di [/r/italy](https://www.reddit.com/r/italy/) su [/r/place](https://www.reddit.com/r/place/)
-
-![reddit italy logo](r_italy_logo.png)
+## Risultato del 2017-04-02
+![Screen1](/results/1.png)![Screen2](/results/2.png)![Screen3](/results/3.png)![Screen4](/results/4.png)![Screen5](/results/5.png)
 
 ## Installazione - Windows
 1. Installare [Node.js](https://nodejs.org/it/)
@@ -32,7 +30,9 @@ npm start
 ```
 
 ## Creare un'immagine della board
-Eseguire `node board.js`, la board viene salvata in `board.png`
+Eseguire `node board.js`, la board viene salvata in `board.png`.
+
+[Link alla board finale](board.png)
 
 ## Changelog
 
