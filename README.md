@@ -1,4 +1,7 @@
 # Reddit Place Italia
+
+# NOTA: questa versione è deprecata, per continuare a sostenere [/r/italy](https://www.reddit.com/r/italy/) utilizza: https://github.com/theitalyplace/reddit-place-italy
+
 Questo programma coordina gli sforzi di [/r/italy](https://www.reddit.com/r/italy/) su [/r/place](https://www.reddit.com/r/place/)
 
 ![reddit italy logo](r_italy_logo.png)
